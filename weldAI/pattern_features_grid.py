@@ -231,7 +231,7 @@ def distortion_to_image(pattern_folder=None):
 def read_distortion(pattern_folder=None):
 
     [ini_coord_x, ini_coord_y, ini_coord_z] = coord_nodes(
-        pattern_folder="C:/Users/mllamosa/Dropbox/2018/Applus/welding patterns all/", file_name="Initial-Bottom.rpt")
+        pattern_folder=pattern_folder, file_name="Initial-Bottom.rpt")
 
     xyz = {}
     for folder_mask in glob.glob(pattern_folder + "/Mask*"):

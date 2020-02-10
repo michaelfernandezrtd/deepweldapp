@@ -24,7 +24,7 @@ class MinMax:
         #    datanormalize[:,idx]=2*(data[:,idx]-min[idx])/(max[idx]-min[idx]) - 1
         datanormalize = 2*(data-min)/(max-min) - 1
         self.parameters = [max,min]
-        return  datanormalize
+        return datanormalize
 
     def remap_data(self,data):
 
@@ -66,11 +66,9 @@ class MinMax:
         return self.parameters
 
 
-def coord_nodes(pattern_folder="C:/Users/mllamosa/Dropbox/2018/Applus/welding patterns all/Mask_2/", file_name="Scenario2- All Distortion/Initial-Bottom.rpt" ):
+def coord_nodes(pattern_folder="data/Mask_3/", file_name="Scenario1- All Distortion/Initial-Bottom.rpt"):
 
     import re
-    print(pattern_folder)
-    print(file_name)
 
     file = pattern_folder + file_name
     distortions_data = open(file, "r").read()
