@@ -5,12 +5,11 @@ import os
 from scipy.spatial import distance
 from scipy.interpolate import griddata
 from weldAI.utils import coord_nodes
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 
 def pattern_sequence(pattern_folder):
 
-    folder_parent = pattern_folder
     features_matrix = np.zeros(64)
     features_matrix_dist = np.zeros(64)
 
@@ -92,7 +91,7 @@ def pattern_sequence(pattern_folder):
            [ini_coord_x, ini_coord_y, ini_coord_z], np.array(pattern_names)
 
 
-def pattern_sequence_masked(pattern_folder="C:/Users/mllamosa/Dropbox/2018/Applus/welding patterns all/"):
+def pattern_sequence_masked(pattern_folder=None):
 
     features_matrix = np.zeros(64)
     features_matrix_dist = np.zeros(64)
@@ -213,7 +212,7 @@ def pattern_sequence_masked(pattern_folder="C:/Users/mllamosa/Dropbox/2018/Applu
            [ini_coord_x, ini_coord_y, ini_coord_z], np.array(pattern_names)
 
 
-def distortion_to_image(pattern_folder="C:/Users/mllamosa/Dropbox/2018/Applus/welding patterns all/"):
+def distortion_to_image(pattern_folder=None):
 
     [ini_coord_x, ini_coord_y, ini_coord_z] = coord_nodes(
         pattern_folder=pattern_folder, file_name="Initial-Bottom.rpt")
@@ -229,7 +228,7 @@ def distortion_to_image(pattern_folder="C:/Users/mllamosa/Dropbox/2018/Applus/we
         plt.savefig('images/' + filename + '_img.png')
 
 
-def read_distortion(pattern_folder="C:/Users/mllamosa/Dropbox/2018/Applus/welding patterns all/"):
+def read_distortion(pattern_folder=None):
 
     [ini_coord_x, ini_coord_y, ini_coord_z] = coord_nodes(
         pattern_folder="C:/Users/mllamosa/Dropbox/2018/Applus/welding patterns all/", file_name="Initial-Bottom.rpt")

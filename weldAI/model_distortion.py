@@ -113,8 +113,8 @@ def model_eval(pattern=np.array([]), pattern_stiff=np.array([]), scenario_col=8,
             # scatter2D_plot(y_score_test.flatten(), y_score_test.flatten(), flag="distortion",
             #                file="images/welding patterns_train_plot")
 
-            plt.imshow(y_score_test.reshape(int(distortion_prediction.shape[1]**0.5), int(distortion_prediction.shape[1]**0.5)), origin='lower', interpolation='none')
-            plt.savefig('images/deepweeld_img.png')
+            #plt.imshow(y_score_test.reshape(int(distortion_prediction.shape[1]**0.5), int(distortion_prediction.shape[1]**0.5)), origin='lower', interpolation='none')
+            #plt.savefig('images/deepweeld_img.png')
 
             return distortion_prediction
 
