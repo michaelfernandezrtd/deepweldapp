@@ -1,6 +1,5 @@
 import dash
 import dash_cytoscape as cyto
-import dash_bootstrap_components as dbc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
@@ -9,7 +8,7 @@ import plotly.graph_objs as go
 from weldAI.data.pattern_features_grid import read_distortion, coord_nodes
 import numpy as np
 from scipy.interpolate import griddata
-from model.model import model_eval
+from weldAI.model_distortion import model_eval
 
 
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]

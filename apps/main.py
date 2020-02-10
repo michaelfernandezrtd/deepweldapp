@@ -1,7 +1,6 @@
 import os
 import dash
 import dash_cytoscape as cyto
-import dash_bootstrap_components as dbc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
@@ -10,7 +9,7 @@ import plotly.graph_objs as go
 from weldAI.data.pattern_features_grid import read_distortion, coord_nodes
 import numpy as np
 from scipy.interpolate import griddata
-from model.model import model_eval
+from weldAI.model_distortion import model_eval
 
 
 from app import app
@@ -36,10 +35,10 @@ selected_node = []
 selected_node_stiff = []
 [nodes, edges] = grid(nrow=nrow, ncol=ncol)
 
-layout = html.Div([
-                                    html.Br(),
+layout = html.Div(
+                    className="row",
+                    children=[
                                     html.Div(html.H1('Deepweld'), style={"text-align": "center"}),
-                                    html.Br(),
                                     html.Div([
                                                 html.H6('Input number of rows and columns:'),
                                                 dcc.Input(id='row_number',
@@ -67,8 +66,10 @@ layout = html.Div([
                                                          )
                                             ], style={"text-align": "center"}, className="row"),
 
-                                        html.Div(children=[
-                                                    html.Div([
+                                        html.Div(
+                                            className="six columns",
+                                            children=[
+                                                        html.Div([
 
                                                                 html.Div(html.H4('Build your layout pattern'), style={"text-align": "center"}),
                                                                 cyto.Cytoscape(
@@ -91,28 +92,20 @@ layout = html.Div([
                                                                                         'fit': "False",
                                                                                 }
                                                                  ),
-                                                                html.Div(children=
-                                                                    [
-                                                                            html.P(id='cytoscape-tapNodeData-output'),
-                                                                            html.P(id='output-container-button'),
-                                                                            html.Br(),
-                                                                            html.Br(),
-                                                                            html.Br(),
-                                                                            html.Br(),
-                                                                            html.Button('Clear', id='clear_button',
-                                                                                        style={
-                                                                                            "position": "relative",
-                                                                                             'margin-left': "auto",
-                                                                                             'margin-right': "auto"}),
+                                                                html.P(id='cytoscape-tapNodeData-output'),
+                                                                html.P(id='output-container-button'),
+                                                                html.Button('Clear', id='clear_button',
+                                                                         style={
+                                                                                "position": "relative",
+                                                                                'margin-left': "auto",
+                                                                                'margin-right': "auto",
+                                                                                "display": "inline-block"}),
 
+                                                        ]),
 
-                                                                    ])
-                                                    ]),
-
-
-                                                    html.Div([html.Br(),
-                                                    html.Br(),
-                                                    html.Div(html.H4('Build your stiffener pattern'), style={"text-align": "center"}),
+                                                                html.Div([html.Br(),
+                                                                html.Br(),
+                                                                html.Div(html.H4('Build your stiffener pattern'), style={"text-align": "center"}),
                                                                                 cyto.Cytoscape(
                                                                                                 id='cytoscape-stiff',
                                                                                                 layout={'name': 'grid', 'rows': nrow,
@@ -136,18 +129,17 @@ layout = html.Div([
                                                                                 ),
                                                                                 html.P(id='cytoscape-tapNodeData-output-stiff'),
                                                                                 html.P(id='output-container-button-stiff'),
-                                                                                html.Br(),
-                                                                                html.Br(),
-                                                                                html.Br(),
-                                                                                html.Br(),
                                                                                 html.Button('Clear', id='clear_button-stiff'),
 
 
-                                                              ], )], style={'position': 'relative',
+                                                              ], )
+
+                                                    ], style={'position': 'relative',
                                                                               'margin-left': "auto",
                                                                               "margin-right": "auto",
                                                                               'align': 'center',
-                                                                                }, className="six columns"),
+                                                                                }
+                                        ),
 
 
                                     html.Div(
@@ -174,7 +166,7 @@ layout = html.Div([
                                     ),
 
 
-                    ], className="row")
+                    ])
 
 
 @app.callback(Output('cytoscape-tapNodeData-output', 'children'),
