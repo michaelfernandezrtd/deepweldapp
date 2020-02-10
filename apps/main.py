@@ -95,7 +95,7 @@ layout = html.Div(
                                                                 html.Button('Clear', id='clear_button',
                                                                          style={
                                                                                 "position": "relative",
-                                                                                'margin-left': "auto",
+                                                                                'margin-left': "555px",
                                                                                 'margin-right': "auto",
                                                                                 "display": "inline-block"}),
 
@@ -127,7 +127,11 @@ layout = html.Div(
                                                                                 ),
                                                                                 html.P(id='cytoscape-tapNodeData-output-stiff'),
                                                                                 html.P(id='output-container-button-stiff'),
-                                                                                html.Button('Clear', id='clear_button-stiff'),
+                                                                                html.Button('Clear', id='clear_button-stiff', style={
+                                                                                                "position": "relative",
+                                                                                                'margin-left': "555px",
+                                                                                                'margin-right': "auto",
+                                                                                                "display": "inline-block"}),
 
 
                                                               ], )
