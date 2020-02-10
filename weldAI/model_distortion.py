@@ -2,7 +2,6 @@ from weldAI.models import model_cnn_masked
 import numpy as np
 import random
 import pickle
-import matplotlib.pyplot as plt
 from keras import backend as K
 
 
