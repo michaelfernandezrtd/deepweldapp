@@ -14,16 +14,14 @@ from weldAI.model_distortion import model_eval
 
 from app import app
 
-if 'DYNO' in os.environ:
-    app_name = os.environ['DASH_APP_NAME']
-else:
-    app_name = 'Deep Weld'
+# if 'DYNO' in os.environ:
+#     app_name = os.environ['DASH_APP_NAME']
+# else:
+app_name = 'deepweld'
 
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
-
 distortion_dict = read_distortion(pattern_folder="data/")
 filenames = list(distortion_dict.keys())
-
 
 [ini_coord_x, ini_coord_y, ini_coord_z] = coord_nodes(
     pattern_folder="data/", file_name="Initial-Bottom.rpt")
