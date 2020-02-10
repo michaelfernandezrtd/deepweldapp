@@ -6,7 +6,7 @@ from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 from apps.utils import grid, my_stylesheet
 import plotly.graph_objs as go
-from weldAI.data.pattern_features_grid import read_distortion, coord_nodes
+from weldAI.pattern_features_grid import read_distortion, coord_nodes
 import numpy as np
 from scipy.interpolate import griddata
 from weldAI.model_distortion import model_eval
