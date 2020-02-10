@@ -7,10 +7,10 @@ from dash.dependencies import Input, Output
 from app import app
 from apps import main, code
 
-if 'DYNO' in os.environ:
-    app_name = os.environ['DASH_APP_NAME']
-else:
-    app_name = 'deepweld/'
+# if 'DYNO' in os.environ:
+#     app_name = os.environ['DASH_APP_NAME']
+# else:
+app_name = 'deepweld/'
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
