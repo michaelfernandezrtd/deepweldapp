@@ -144,29 +144,22 @@ layout = html.Div(
                                         ),
 
 
-                                    html.Div(
-                                        [
-                                            dcc.Graph(
-                                                        id="distortion-graph",
+                                    html.Div(className="row", children=[
 
-                                                    ),
+                                                                dcc.Graph(id="distortion-graph",
+                                                                          style={
+                                                                              'width': '50%', 'height': '800px',
+                                                                              'position': 'relative',
+                                                                              'margin-left': "auto", "margin-right": "auto"
+                                                                          }
+                                                                          ),
+                                                                html.Button('Compute distortion', id='submit_button')
 
-                                        ], style={
-                                                      'width': '50%', 'height': '800px',
-                                                       'margin-left': "1200px", "margin-right": "50px"
-                                                  }, className="row"
-                                    ),
-
-                                    html.Div(
-                                        [
-                                            html.Button('Compute distortion', id='submit_button')
-                                        ], style={
-                                            'width': '50%', 'height': '100px',
-                                            'margin-left': "1700px", "margin-right": "50px",
-                                            'align': 'center'
-                                        }, className="row"
-                                    ),
-
+                                                    ], style={
+                                                            'position': 'relative',
+                                                            'margin-left': "auto", "margin-right": "auto"
+                                                        },
+                                            ),
 
                     ])
 
