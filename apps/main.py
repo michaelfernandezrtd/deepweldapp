@@ -36,36 +36,46 @@ selected_node_stiff = []
 layout = html.Div(className="row",
                 children=[
                     html.Div(html.H1('Deepweld'), style={"text-align": "center"}),
+                    html.Div([
+                        html.Br(),
+                        html.Br(),
+                        html.Br(),
+                        html.H6('Input number of rows and columns:'),
+                        dcc.Input(id='row_number',
+                                  placeholder='Enter a number of rows...',
+                                  type='number',
+                                  value='8',
+                                  min=4, max=16, step=1,
+                                  ),
+                        # html.H6('Number of columns'),
+                        dcc.Input(id='col_number',
+                                  placeholder='Enter a number of cols...',
+                                  type='number',
+                                  value='8',
+                                  min=4, max=16, step=1
+                                  ),
+                    ], style={
+                        'position': 'static',
+                        'margin-left': "auto",
+                        "margin-right": "auto",
+                        "text-align": "center"
+                    }
+                    ),
                     html.Div(
                         className="six columns",
                         children=[
-                                    html.Div([
-                                                html.H6('Input number of rows and columns:'),
-                                                dcc.Input(id='row_number',
-                                                          placeholder='Enter a number of rows...',
-                                                          type='number',
-                                                          value='8',
-                                                          min=4, max=16, step=1,
-                                                          ),
-                                                # html.H6('Number of columns'),
-                                                dcc.Input(id='col_number',
-                                                          placeholder='Enter a number of cols...',
-                                                          type='number',
-                                                          value='8',
-                                                          min=4, max=16, step=1
-                                                          ),
-                                            ], style={
-                                                           'position': 'static',
-                                                           'margin-left': "auto",
-                                                           "margin-right": "auto",
-                                                           }
-                                    ),
-
-
                                     html.Div(className="row",
                                           children=[
                                                             html.Div(className="six columns",
-                                                                        children=[html.Div(html.H4('Build your layout pattern'), style={"text-align": "center"}),
+                                                                        children=[
+                                                                                html.Br(),
+                                                                                html.Br(),
+                                                                                html.Br(),
+                                                                                html.Br(),
+                                                                                html.Br(),
+                                                                                html.Br(),
+                                                                                html.Br(),
+                                                                                html.Div(html.H4('Build your layout pattern'), style={"text-align": "center"}),
                                                                                 cyto.Cytoscape(
                                                                                         id='cytoscape-grid',
                                                                                         layout={'name': 'grid', 'rows': nrow,
@@ -83,22 +93,34 @@ layout = html.Div(className="row",
                                                                                                 'userZoomingEnabled': "False",
                                                                                                 'panningEnabled': "False",
                                                                                                 'userPanningEnabled': "False",
-                                                                                                'fit': "False",
+                                                                                                'fit': "True",
                                                                                         }
                                                                                 ),
 
                                                                                  html.P(id='cytoscape-tapNodeData-output'),
                                                                                  html.P(id='output-container-button'),
-                                                                                 html.Div(html.Button('Clear', id='clear_button',))
+                                                                                 html.Div(html.Button('Clear', id='clear_button',
+                                                                                          style={'margin-left': "auto",
+                                                                                                 'margin-right': "auto",
+                                                                                                 "text-align": "center"
+                                                                                                 }
+                                                                                          ))
 
-                                                                        ], style={"position": "static",
+                                                                        ], style={"position": "relative",
                                                                                   'margin-left': "auto",
-                                                                                  'margin-right': "auto"
+                                                                                  'margin-right': "auto",
                                                                                   }
                                                             ),
 
                                                             html.Div(className="six columns",
                                                                         children=[
+                                                                                html.Br(),
+                                                                                html.Br(),
+                                                                                html.Br(),
+                                                                                html.Br(),
+                                                                                html.Br(),
+                                                                                html.Br(),
+                                                                                html.Br(),
                                                                                 html.Div(html.H4('Build your stiffener pattern'), style={"text-align": "center"}),
                                                                                 cyto.Cytoscape(
                                                                                                 id='cytoscape-stiff',
@@ -117,20 +139,26 @@ layout = html.Div(className="row",
                                                                                                         'userZoomingEnabled': "False",
                                                                                                         'panningEnabled': "False",
                                                                                                         'userPanningEnabled': "False",
-                                                                                                        'fit': "False",
+                                                                                                        'fit': "True",
                                                                                                         'border': 'line'
                                                                                                 }
                                                                                 ),
                                                                                 html.P(id='cytoscape-tapNodeData-output-stiff'),
                                                                                 html.P(id='output-container-button-stiff'),
-                                                                                html.Button('Clear', id='clear_button-stiff'),
+                                                                                html.Button('Clear', id='clear_button-stiff',
+                                                                                            style={
+                                                                                                 'margin-left': "auto",
+                                                                                                 'margin-right': "auto",
+                                                                                                 "text-align": "center",
+                                                                                                 "align-items": "center",
+                                                                                                 "justify-content": "center"
+                                                                                                 }),
 
 
-                                                                        ], style={'position': 'static',
+                                                                        ], style={'position': 'relative',
                                                                               'margin-left': "auto",
                                                                               "margin-right": "auto",
-                                                                              'align': 'center'
-                                                                                  }
+                                                                              }
 
                                                             ),
                                                             html.Div([
@@ -142,6 +170,7 @@ layout = html.Div(className="row",
                                                                                 'margin-left': "1200px",
                                                                                 "margin-right": "auto",
                                                                                 'margin-top': "10px",
+                                                                                "text-align": "center"
                                                                              },
                                                             ),
 
@@ -295,7 +324,7 @@ def update_figure(n_clicks, input_nrow, input_ncol):
     fig.update_layout(
         title={
             'text': "Distortion surface",
-            'y': 0.01,
+            'y': 0.97,
             'x': 0.50,
             'xanchor': 'center',
             'yanchor': 'bottom',
