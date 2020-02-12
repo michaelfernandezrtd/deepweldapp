@@ -33,9 +33,9 @@ selected_node = []
 selected_node_stiff = []
 [nodes, edges] = grid(nrow=nrow, ncol=ncol)
 
-layout = html.Div(className="row",
-                children=[
-                    html.Div(html.H1('Deepweld'), style={"text-align": "center"}),
+layout = html.Div([html.Div(html.H1('Deepweld'), style={"text-align": "center"}),
+            dcc.Tabs([
+                dcc.Tab(label='Input layout pattern', children=[
                     html.Div([
                         html.Br(),
                         html.Br(),
@@ -60,7 +60,8 @@ layout = html.Div(className="row",
                         "margin-right": "auto",
                         "text-align": "center"
                     }
-                    ),
+                    )
+                ,
                     html.Div(
                         className="six columns",
                         children=[
@@ -161,22 +162,29 @@ layout = html.Div(className="row",
                                                                               }
 
                                                             ),
-                                                            html.Div([
-                                                                        dcc.Graph(id="distortion-graph",),
-                                                                        html.Button('Compute distortion', id='submit_button')
 
-                                                                    ], style={
-                                                                                'position': 'relative',
-                                                                                'margin-left': "1200px",
-                                                                                "margin-right": "auto",
-                                                                                'margin-top': "10px",
-                                                                                "text-align": "center"
-                                                                             },
-                                                            ),
+                            ])
+                        ]),
+                    ]),
+                            dcc.Tab(label='Distortion', children=[
+                            html.Div([
+                                        dcc.Graph(id="distortion-graph",),
+                                        html.Button('Compute distortion', id='submit_button')
 
-                                           ])
-                        ])
+                                    ], style={
+                                                'position': 'relative',
+                                                'margin-left': "1200px",
+                                                "margin-right": "auto",
+                                                'margin-top': "10px",
+                                                "text-align": "center"
+                                             },
+                               )]),
+
+
+
+
                 ])
+                   ])
 
 @app.callback(Output('cytoscape-tapNodeData-output', 'children'),
               [Input('cytoscape-grid', 'tapNodeData')])
