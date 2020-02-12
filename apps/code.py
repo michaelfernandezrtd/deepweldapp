@@ -9,5 +9,5 @@ import dash_html_components as html
 app_name = 'deepweld'
 
 layout = html.Div([
-    dcc.Markdown(children=open('apps/main.py', 'r').read()),
+    dcc.Markdown(children=open('apps/main1.py', 'r').read()),
 ])

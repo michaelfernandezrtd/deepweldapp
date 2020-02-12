@@ -9,7 +9,7 @@ class minmax:
     def copy(self):
         return minmax()
 
-    def map_data(self,data):
+    def map_data(self, data):
         max = np.amax(data,axis=0)
         min = np.amin(data,axis=0)
         #print "Inside maxmin",max,min
