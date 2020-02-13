@@ -11,8 +11,6 @@ def model_eval(pattern=np.array([]), pattern_stiff=np.array([]), scenario_col=8,
             img_rows = scenario_row
             img_cols = scenario_col
 
-            nb_epoch = 100
-            extranodes = 1
             dropout = 0.6
             nb_filters = 24
             nb_conv = 6
@@ -22,32 +20,6 @@ def model_eval(pattern=np.array([]), pattern_stiff=np.array([]), scenario_col=8,
             reg_val = 0.001
             params = {'nb_filters': nb_filters, 'nb_conv': nb_conv, 'nb_pool': nb_pool,
                       'reg_val': reg_val, 'nb_layer': nb_layer, 'hidden': hidden, 'dropout': dropout}
-
-            folder = "data/"
-            # folder = "C:/Users/mllamosa/Dropbox/2018/Applus/welding patterns all/"
-            # pattern_features = pattern_sequence_masked_parallel(pattern_folder=folder)
-            # features_matrix = np.array([features[0][0] for features in pattern_features])
-            #
-            # distortion_coord = [np.array([features[1] for features in pattern_features])[:, :, :, 0][:, 0, :].T]
-            # distortion_coord.append(np.array([features[1] for features in pattern_features])[:, :, :, 0][:, 1, :].T)
-            # distortion_coord.append(np.array([features[1] for features in pattern_features])[:, :, :, 0][:, 2, :].T)
-
-            #
-            # feature_input = feature_data[:, :scenario_col * scenario_row]
-            #
-            #
-            # feature_input = feature_input.reshape(feature_input.shape[0], img_rows, img_cols, 1)
-            # feature_input_norm = np.concatenate((feature_input, stiffener_mask), axis=3)
-
-            #feature_input = np.array(pattern).reshape(scenario_col, scenario_row)
-            # stiffener_mask = np.array([[1., 0., 0., 0., 1., 0., 0., 0.],
-            #               [1., 0., 0., 0., 1., 0., 0., 0.],
-            #               [1., 0., 0., 0., 1., 0., 0., 0.],
-            #               [1., 0., 0., 0., 1., 0., 0., 0.],
-            #               [1., 0., 0., 0., 1., 0., 0., 0.],
-            #               [1., 0., 0., 0., 1., 0., 0., 0.],
-            #               [1., 0., 0., 0., 1., 0., 0., 0.],
-            #               [1., 0., 0., 0., 1., 0., 0., 0.]]).reshape(1, scenario_row, scenario_col, 1)
 
             stiffener_mask = np.zeros((1, scenario_row*scenario_col))
 
@@ -102,18 +74,10 @@ def model_eval(pattern=np.array([]), pattern_stiff=np.array([]), scenario_col=8,
             model.load_weights('data/model_weights.h5')
 
             y_score_test = model.predict(x_test)
-
             K.clear_session()
 
             y_mean_std = pickle.load(open("data/y_std.p", "rb"))
-
             distortion_prediction = y_score_test*y_mean_std['y_std'] - y_mean_std['y_mean']
-
-            # scatter2D_plot(y_score_test.flatten(), y_score_test.flatten(), flag="distortion",
-            #                file="images/welding patterns_train_plot")
-
-            #plt.imshow(y_score_test.reshape(int(distortion_prediction.shape[1]**0.5), int(distortion_prediction.shape[1]**0.5)), origin='lower', interpolation='none')
-            #plt.savefig('images/deepweeld_img.png')
 
             return distortion_prediction
 
