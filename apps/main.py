@@ -142,7 +142,7 @@ layout = html.Div([
                                                  html.P(id='output-container-button-stiff'),
                                                  html.Br(),
                                                  html.Br(),
-                                                 html.Div(html.Button('Clear stiffener pattern', id='clear_button_stiff'),
+                                                 html.Div(html.Button('Clear stiffener pattern', id='clear_button-stiff'),
                                                           style={
                                                               'position': 'relative',
                                                               'margin-left': "auto",
@@ -278,7 +278,9 @@ def update_elements(input_nrow, input_ncol, elements):
     dash.dependencies.Output('output-container-button-stiff', 'children'),
     [dash.dependencies.Input('clear_button-stiff', 'n_clicks')])
 def update_output(n_clicks):
+    print(n_clicks, selected_node_stiff)
     if n_clicks is not None and len(selected_node_stiff) > 0:
+        print(selected_node_stiff)
         last_node_sequence_stiff = selected_node_stiff.copy()
         selected_node_stiff.clear()
 
