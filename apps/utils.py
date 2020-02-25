@@ -4,7 +4,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 
-def grid(nrow=8, ncol=8):
+def pattern_grid(nrow=8, ncol=8):
 
             edges = []
             size = ncol * nrow
@@ -41,6 +41,31 @@ def grid(nrow=8, ncol=8):
 
             return [nodes, edges]
 
+
+def stiffener_grid(nrow=8, ncol=8):
+
+    edges = []
+    size = ncol * nrow
+    nodes = [
+        {
+            'data': {'id': short, 'label': label},
+            'selectable': selectable, 'grabbable': grabbable,
+            # 'classes': "red"
+        }
+        for short, label, selectable, grabbable in ((str(i), str(i), True, False) for i in range(1, size + 1))
+
+    ]
+
+    for i in range(1, size, 1):
+        res = i % nrow
+
+        if i <= ncol:
+            edges.append({'data': {'source': i, 'target': nrow*ncol - i}})
+
+        elif res == 1:
+            edges.append({'data': {'source': i, 'target': i + 1}})
+
+    return [nodes, edges]
 
 
 my_stylesheet = [
@@ -115,7 +140,7 @@ styles = {
 }
 
 
-elements = grid(nrow=8, ncol=8)
+elements = pattern_grid(nrow=8, ncol=8)
 
 app = dash.Dash(__name__)
 
@@ -148,7 +173,6 @@ def displayTapEdgeData(data):
     if data:
         return "You recently clicked/tapped the edge between " + data['source'].upper() + " and " + data[
             'target'].upper()
-
 
 
 if __name__ == '__main__':

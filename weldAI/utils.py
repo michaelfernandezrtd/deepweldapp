@@ -16,14 +16,11 @@ class MinMax:
     def copy(self):
         return minmax()
 
-    def map_data(self,data):
-        max = np.amax(data,axis=0)
-        min = np.amin(data,axis=0)
-        #print "Inside maxmin",max,min
-    #for idx in range(data.shape[1]):
-        #    datanormalize[:,idx]=2*(data[:,idx]-min[idx])/(max[idx]-min[idx]) - 1
+    def map_data(self, data):
+        max = np.amax(data, axis=0)
+        min = np.amin(data, axis=0)
         datanormalize = 2*(data-min)/(max-min) - 1
-        self.parameters = [max,min]
+        self.parameters = [max, min]
         return datanormalize
 
     def remap_data(self,data):
