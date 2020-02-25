@@ -389,31 +389,34 @@ def update_figure(n_clicks, input_nrow, input_ncol, list_of_contents, list_of_na
 
     if n_clicks is not None:
 
+        input_nrow = int(input_nrow)
+        input_ncol = int(input_ncol)
+
         data_frames = [
             parse_contents(c, n, d)[1] for c, n, d in
             zip(list_of_contents, list_of_names, list_of_dates)]
 
-        if len(data_frames) > 0:
-            selected_node = data_frames[0]['welding_pattern'][~np.isnan(data_frames[0]['welding_pattern'])]
-            selected_node_stiff = data_frames[0]['stiffener_pattern'][~np.isnan(data_frames[0]['stiffener_pattern'])]
+        if len(data_frames) > 0 and len(selected_node) == 0:
+            selected_node_file = data_frames[0]['welding_pattern'][~np.isnan(data_frames[0]['welding_pattern'])]
+            selected_node_stiff_file = data_frames[0]['stiffener_pattern'][~np.isnan(data_frames[0]['stiffener_pattern'])]
 
-        input_nrow = int(input_nrow)
-        input_ncol = int(input_ncol)
+            pattern = np.zeros((1, input_nrow * input_ncol))
+            pattern[:, np.array(selected_node).astype(int) - 1] = np.array(selected_node).astype(int)
+            pattern_stiff = np.array([int(i) for i in selected_node_stiff]).reshape(len(selected_node_stiff))
 
-        pattern = np.zeros((1, input_nrow * input_ncol))
         if len(selected_node) > 0:
+            pattern = np.zeros((1, input_nrow * input_ncol))
             pattern[:, np.array(selected_node).astype(int) - 1] = np.array(selected_node).astype(int)
 
-        if len(selected_node_stiff) == 0:
+        if len(selected_node_stiff) == 0 and len(selected_node) > 0:
             # n = int(input_ncol/2)
             # k = int(input_nrow/2)
             # pattern_stiff = np.hstack(([np.array([i for i in range(n, input_ncol*(input_nrow+1) - (input_ncol-n), input_nrow)]), np.array([i for i in range(k*input_ncol, (k+1)*input_ncol)])]))
             pattern_stiff = np.array([])
-        else:
+        elif len(selected_node_stiff) > 0 and len(selected_node) > 0:
             pattern_stiff = np.array([int(i) for i in selected_node_stiff]).reshape(len(selected_node_stiff))
 
 
-        print(pattern.astype(int), pattern_stiff.astype(int))
         distortion_prediction = model_eval(pattern.astype(int), pattern_stiff.astype(int), input_nrow, input_ncol)
 
         zi = distortion_prediction.reshape(int(distortion_prediction.shape[1]**0.5),
