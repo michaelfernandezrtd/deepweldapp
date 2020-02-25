@@ -401,8 +401,8 @@ def update_figure(n_clicks, input_nrow, input_ncol, list_of_contents, list_of_na
             selected_node_stiff_file = data_frames[0]['stiffener_pattern'][~np.isnan(data_frames[0]['stiffener_pattern'])]
 
             pattern = np.zeros((1, input_nrow * input_ncol))
-            pattern[:, np.array(selected_node).astype(int) - 1] = np.array(selected_node).astype(int)
-            pattern_stiff = np.array([int(i) for i in selected_node_stiff]).reshape(len(selected_node_stiff))
+            pattern[:, np.array(selected_node_file).astype(int) - 1] = np.array(selected_node_file).astype(int)
+            pattern_stiff = np.array([int(i) for i in selected_node_stiff_file]).reshape(len(selected_node_stiff_file))
 
         if len(selected_node) > 0:
             pattern = np.zeros((1, input_nrow * input_ncol))
