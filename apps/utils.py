@@ -4,6 +4,28 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 
+def scatter_plot(dff, axis_type, title):
+    return {
+        'data': [dict(
+            x=dff['X'],
+            y=dff['Y'],
+            mode='lines+markers'
+        )],
+        'layout': {
+            'height': 225,
+            'margin': {'l': 20, 'b': 30, 'r': 10, 't': 10},
+            'annotations': [{
+                'x': 0, 'y': 0.85, 'xanchor': 'center', 'yanchor': 'bottom',
+                'xref': 'paper', 'yref': 'paper', 'showarrow': False,
+                'align': 'left', 'bgcolor': 'rgba(255, 255, 255, 0.5)',
+                'text': title
+            }],
+            'yaxis': {'type': 'linear' if axis_type == 'Linear' else 'log'},
+            'xaxis': {'showgrid': True}
+        }
+    }
+
+
 def pattern_grid(nrow=8, ncol=8):
 
             edges = []
@@ -174,8 +196,9 @@ def displayTapEdgeData(data):
         return "You recently clicked/tapped the edge between " + data['source'].upper() + " and " + data[
             'target'].upper()
 
-
 if __name__ == '__main__':
     app.run_server(debug=True)
+
+
 
 

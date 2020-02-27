@@ -3,8 +3,9 @@ import dash_cytoscape as cyto
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
+import dash_bootstrap_components as dbc
 import dash_table
-from apps.utils import pattern_grid, stiffener_grid, my_stylesheet
+from apps.utils import pattern_grid, stiffener_grid, my_stylesheet, scatter_plot
 import plotly.graph_objs as go
 from weldAI.pattern_features_grid import read_distortion, coord_nodes
 import numpy as np
@@ -15,6 +16,7 @@ from weldAI.model_distortion import model_eval
 import pandas as pd
 import datetime
 from app import app
+import json
 
 # if 'DYNO' in os.environ:
 #     app_name = os.environ['DASH_APP_NAME']
@@ -22,6 +24,13 @@ from app import app
 app_name = 'deepweld'
 
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
+styles = {
+    'pre': {
+        'border': 'thin lightgrey solid',
+        'overflowX': 'scroll'
+    }
+}
+
 distortion_dict = read_distortion(pattern_folder="data/")
 filenames = list(distortion_dict.keys())
 
@@ -34,14 +43,15 @@ nrow = 16
 ncol = 16
 selected_node = []
 selected_node_stiff = []
+dff = dict()
 [nodes, edges] = pattern_grid(nrow=nrow, ncol=ncol)
 [nodes_stiff, edges_stiff] = stiffener_grid(nrow=nrow, ncol=ncol)
 
 layout = html.Div(
     [
             html.Div(html.H1('Deepweld'), style={"text-align": "center"}),
-            dcc.Tabs(
-            [
+            dcc.Tabs([
+
                 dcc.Tab(label='Project', children=[
                         dcc.Upload(
                                 id='upload-data',
@@ -146,9 +156,7 @@ layout = html.Div(
                                                                            "text-align": "center"
                                                                        })
                                                 ]),
-
-
-                                            html.Div([
+                                                html.Div([
                                                 html.Br(),
                                                 html.Br(),
                                                 html.Div(html.H4('Build your stiffener pattern'),
@@ -210,33 +218,73 @@ layout = html.Div(
                                    ]),
                         ]),
 
-                        dcc.Tab(label='Visualization', className="row",
-                                children=[
-                                            html.Div(dcc.Graph(id="distortion-graph",),
-                                                     style={
-                                                        'position': 'relative',
-                                                        'margin-left': "auto",
-                                                        "margin-right": "auto",
-                                                        'margin-top': "auto",
-                                                        "text-align": "center"
-                                                     }),
+                        dcc.Tab(label='Visualization',
+                                children=[html.Div([
+                                                    html.Div([
+                                                        html.Div([
+                                                            dcc.Graph(id="distortion-graph",
+                                                                     hoverData={"points": [
+                                                                                    {
+                                                                                      "x": 200,
+                                                                                      "y": 200,
+                                                                                      "z": -0.15976833810031202,
+                                                                                      "curveNumber": 0
+                                                                                    }
+                                                                                  ]
+                                                                                },
 
-                                            html.Div(html.Button('Compute distortion', id='submit_button', ),
-                                                     style={
-                                                         'position': 'relative',
-                                                         'margin-left': "auto",
-                                                         "margin-right": "auto",
-                                                         'margin-top': "auto",
-                                                         "text-align": "center"
-                                                     })
+                                                                                style={'width': '30%',
+                                                                                    'display': 'inline-block',
+                                                                                    'padding': '0 20'
+                                                                                }),
 
-                                ])
-                    ]),
+                                                        ]),
+                                                        html.Div(html.Button('Compute distortion', id='submit_button',),
+                                                                        style={
+                                                                                    "text-align": "center"
+                                                                        }
+                                                        ),
+                                                        html.Br(),
+                                                        html.Br(),
+
+                                                    ]),
+
+
+
+                                                html.Div([
+                                                            html.Div(
+                                                                        dcc.Graph(id='x-z-scatter',), style={
+                                                                                                        'width': '49%',
+                                                                                                        'display': 'inline-block',
+                                                                                                        'padding': '20 20'
+                                                                                                      }
+                                                            ),
+
+                                                            html.Div(
+                                                                        dcc.Graph(id='y-z-scatter'), style={
+                                                                                                        'width': '49%',
+                                                                                                        'display': 'inline-block',
+                                                                                                        'padding': '20 20'
+                                                                                                      },
+                                                             ),
+
+                                                ]),
+
+                                ], className='row',  style={
+                                                 'position': 'relative',
+                                                 'margin-left': "auto",
+                                                 "margin-right": "auto",
+                                                 'margin-top': 0,
+                                                 'margin-bottom': 0
+                                                }),
+                                html.Pre(id='hover-data', style=styles['pre']),
+                        ]),
+            ]),
 
 
 
 
-            ])
+    ])
 
 
 @app.callback(Output('cytoscape-tapNodeData-output', 'children'),
@@ -392,11 +440,13 @@ def update_output(list_of_contents, list_of_names, list_of_dates):
              State('upload-data', 'last_modified')]
             )
 def update_figure(n_clicks, input_nrow, input_ncol, list_of_contents, list_of_names, list_of_dates):
+    input_nrow = int(input_nrow)
+    input_ncol = int(input_ncol)
+
+    pattern = np.zeros((1, input_nrow * input_ncol))
+    pattern_stiff = np.array([])
 
     if n_clicks is not None:
-
-        input_nrow = int(input_nrow)
-        input_ncol = int(input_ncol)
 
         if list_of_names is not None and len(selected_node) == 0:
             data_frames = [
@@ -410,18 +460,12 @@ def update_figure(n_clicks, input_nrow, input_ncol, list_of_contents, list_of_na
             pattern[:, np.array(selected_node_file).astype(int) - 1] = np.array(selected_node_file).astype(int)
             pattern_stiff = np.array([int(i) for i in selected_node_stiff_file]).reshape(len(selected_node_stiff_file))
 
-        if len(selected_node) > 0:
-            pattern = np.zeros((1, input_nrow * input_ncol))
-            pattern[:, np.array(selected_node).astype(int) - 1] = np.array(selected_node).astype(int)
+        else:
+            if len(selected_node) > 0:
+                pattern[:, np.array(selected_node).astype(int) - 1] = np.array(selected_node).astype(int)
 
-        if len(selected_node_stiff) == 0 and len(selected_node) > 0:
-            # n = int(input_ncol/2)
-            # k = int(input_nrow/2)
-            # pattern_stiff = np.hstack(([np.array([i for i in range(n, input_ncol*(input_nrow+1) - (input_ncol-n), input_nrow)]), np.array([i for i in range(k*input_ncol, (k+1)*input_ncol)])]))
-            pattern_stiff = np.array([])
-        elif len(selected_node_stiff) > 0 and len(selected_node) > 0:
-            pattern_stiff = np.array([int(i) for i in selected_node_stiff]).reshape(len(selected_node_stiff))
-
+                if len(selected_node_stiff) > 0:
+                    pattern_stiff = np.array([int(i) for i in selected_node_stiff]).reshape(len(selected_node_stiff))
 
         distortion_prediction = model_eval(pattern.astype(int), pattern_stiff.astype(int), input_nrow, input_ncol)
 
@@ -433,6 +477,9 @@ def update_figure(n_clicks, input_nrow, input_ncol, list_of_contents, list_of_na
         zi = griddata((distortion_dict[filename][0], distortion_dict[filename][1]),
                               distortion_dict[filename][2],
                               (xi, yi), method='cubic')
+    dff['x'] = xi
+    dff['y'] = yi
+    dff['z'] = zi
 
     trace = [go.Surface(y=yi, x=xi, z=zi, colorscale="YlGnBu", opacity=0.8,
                             colorbar={"title": "Distortion (mm)", "len": 0.5, "thickness": 15}, )]
@@ -453,7 +500,6 @@ def update_figure(n_clicks, input_nrow, input_ncol, list_of_contents, list_of_na
 
     fig.update_layout(
         title={
-            'text': "Distortion surface",
             'y': 0.92,
             'x': 0.50,
             'xanchor': 'center',
@@ -469,3 +515,30 @@ def update_figure(n_clicks, input_nrow, input_ncol, list_of_contents, list_of_na
     return fig
 
 
+@app.callback(
+    Output('hover-data', 'children'),
+    [Input('distortion-graph', 'hoverData')])
+def display_hover_data(hoverData):
+    return json.dumps(hoverData, indent=2)
+
+@app.callback(Output('x-z-scatter', 'figure'),
+    [Input('distortion-graph', 'hoverData')])
+def update_xz_scatter(hoverData):
+    XY = dict()
+    x = hoverData['points'][0]['x']
+    y = hoverData['points'][0]['y']
+    XY['X'] = dff['x'][np.where(dff['y'] == y)]
+    XY['Y'] = dff['z'][np.where(dff['y'] == y)]
+    title = 'XZ scatter'
+    return scatter_plot(XY, 'Linear', title)
+
+@app.callback(Output('y-z-scatter', 'figure'),
+    [Input('distortion-graph', 'hoverData')])
+def update_xz_scatter(hoverData):
+    XY = dict()
+    x = hoverData['points'][0]['y']
+    z = hoverData['points'][0]['z']
+    XY['X'] = dff['y'][np.where(dff['x'] == x)]
+    XY['Y'] = dff['z'][np.where(dff['x'] == x)]
+    title = 'YZ scatter'
+    return scatter_plot(XY, 'Linear', title)
