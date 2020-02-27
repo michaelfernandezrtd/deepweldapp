@@ -104,9 +104,9 @@ layout = html.Div(
                             "margin-right": "auto",
                             "text-align": "center"
                         }),
-                        html.Div(className="row", children=
+                        html.Div( children=
                                     [
-                                            html.Div(
+                                            html.Div(className="six columns", children=
                                                 [
                                                               html.Div(html.H4('Build your layout pattern'),
                                                                        style={"text-align": "center"}),
@@ -156,68 +156,66 @@ layout = html.Div(
                                                                            "text-align": "center"
                                                                        })
                                                 ]),
-                                                html.Div([
-                                                html.Br(),
-                                                html.Br(),
-                                                html.Div(html.H4('Build your stiffener pattern'),
-                                                       style={"text-align": "center"}),
-                                                    cyto.Cytoscape(
-                                                                  id='cytoscape-stiff',
-                                                                  layout={'name': 'grid', 'rows': nrow,
-                                                                          'panningEnabled': False,
-                                                                          'zoomingEnabled': False,
-                                                                          'userZoomingEnabled': False
-                                                                          },
-                                                                  stylesheet=my_stylesheet,
-                                                                  elements=nodes + edges,
-                                                                  style={
-                                                                      'width': '400px', 'height': '400px',
-                                                                      'margin-left': "auto",
-                                                                      'margin-right': "auto",
-                                                                      'zoomingEnabled': "False",
-                                                                      'userZoomingEnabled': "False",
-                                                                      'panningEnabled': "False",
-                                                                      'userPanningEnabled': "False",
-                                                                      'fit': "True",
-                                                                      'border': 'line'
-                                                          }
-                                                    ),
-                                                    html.P(id='cytoscape-tapNodeData-output-stiff', style={
-                                                        'position': 'relative',
-                                                        'margin-left': "auto",
-                                                        "margin-right": "auto",
-                                                        'margin-top': "auto",
-                                                        "text-align": "center"
-                                                     }),
-                                                    html.P(id='output-container-button-stiff', style={
-                                                        'position': 'relative',
-                                                        'margin-left': "auto",
-                                                        "margin-right": "auto",
-                                                        'margin-top': "auto",
-                                                        "text-align": "center"
-                                                     }),
-                                                    html.Br(),
-                                                    html.Br(),
-                                                    html.Div(html.Button('Clear stiffener pattern', id='clear_button-stiff'),
-                                                               style={
-                                                                   'position': 'relative',
-                                                                   'margin-left': "auto",
-                                                                   "margin-right": "auto",
-                                                                   'margin-top': "auto",
-                                                                   "text-align": "center"
-                                                               })
+                                            html.Div(className="six columns", children=
+                                                [
+                                                                html.Div(html.H4('Build your stiffener pattern'),
+                                                                       style={"text-align": "center"}),
+                                                                    cyto.Cytoscape(
+                                                                                  id='cytoscape-stiff',
+                                                                                  layout={'name': 'grid', 'rows': nrow,
+                                                                                          'panningEnabled': False,
+                                                                                          'zoomingEnabled': False,
+                                                                                          'userZoomingEnabled': False
+                                                                                          },
+                                                                                  stylesheet=my_stylesheet,
+                                                                                  elements=nodes + edges,
+                                                                                  style={
+                                                                                      'width': '400px', 'height': '400px',
+                                                                                      'margin-left': "auto",
+                                                                                      'margin-right': "auto",
+                                                                                      'zoomingEnabled': "False",
+                                                                                      'userZoomingEnabled': "False",
+                                                                                      'panningEnabled': "False",
+                                                                                      'userPanningEnabled': "False",
+                                                                                      'fit': "True",
+                                                                                      'border': 'line'
+                                                                          }
+                                                                    ),
+                                                                    html.P(id='cytoscape-tapNodeData-output-stiff', style={
+                                                                        'position': 'relative',
+                                                                        'margin-left': "auto",
+                                                                        "margin-right": "auto",
+                                                                        'margin-top': "auto",
+                                                                        "text-align": "center"
+                                                                     }),
+                                                                    html.P(id='output-container-button-stiff', style={
+                                                                        'position': 'relative',
+                                                                        'margin-left': "auto",
+                                                                        "margin-right": "auto",
+                                                                        'margin-top': "auto",
+                                                                        "text-align": "center"
+                                                                     }),
+                                                                    html.Br(),
+                                                                    html.Br(),
+                                                                    html.Div(html.Button('Clear stiffener pattern', id='clear_button-stiff'),
+                                                                               style={
+                                                                                   'position': 'relative',
+                                                                                   'margin-left': "auto",
+                                                                                   "margin-right": "auto",
+                                                                                   'margin-top': "auto",
+                                                                                   "text-align": "center"
+                                                                               })
+                                                ]),
+                                    ], style={
+                                                                 'position': 'relative',
+                                                                 'margin-left': "auto",
+                                                                 "margin-right": "auto",
+                                                                 'margin-top': "auto",
+                                                                }
 
-                                            ], style={
-                                                 'position': 'relative',
-                                                 'margin-left': "auto",
-                                                 "margin-right": "auto",
-                                                 'margin-top': "auto",
-                                                }
-
-                                            ),
+                                                            ),
                                    ]),
-                        ]),
-
+                        
                         dcc.Tab(label='Visualization',
                                 children=[html.Div([
                                                     html.Div([
@@ -233,17 +231,19 @@ layout = html.Div(
                                                                                   ]
                                                                                 },
 
-                                                                                style={'width': '30%',
-                                                                                    'display': 'inline-block',
-                                                                                    'padding': '0 20'
-                                                                                }),
+                                                            ),
 
-                                                        ]),
-                                                        html.Div(html.Button('Compute distortion', id='submit_button',),
+                                                            html.Div(html.Button('Compute distortion', id='submit_button',),
                                                                         style={
-                                                                                    "text-align": "center"
+                                                                                     "text-align": "center"
                                                                         }
                                                         ),
+                                                        ], style={'width': 'auto',
+                                                                    'display': 'inline-block',
+                                                                    'padding': '0 20'
+                                                           }),
+                                                        html.Br(),
+                                                        html.Br(),
                                                         html.Br(),
                                                         html.Br(),
 
@@ -530,6 +530,7 @@ def update_xz_scatter(hoverData):
     XY['X'] = dff['x'][np.where(dff['y'] == y)]
     XY['Y'] = dff['z'][np.where(dff['y'] == y)]
     title = 'XZ scatter'
+
     return scatter_plot(XY, 'Linear', title)
 
 @app.callback(Output('y-z-scatter', 'figure'),
@@ -540,5 +541,7 @@ def update_xz_scatter(hoverData):
     z = hoverData['points'][0]['z']
     XY['X'] = dff['y'][np.where(dff['x'] == x)]
     XY['Y'] = dff['z'][np.where(dff['x'] == x)]
+
     title = 'YZ scatter'
+
     return scatter_plot(XY, 'Linear', title)

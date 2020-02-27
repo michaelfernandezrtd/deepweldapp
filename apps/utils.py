@@ -15,9 +15,9 @@ def scatter_plot(dff, axis_type, title):
             'height': 225,
             'margin': {'l': 20, 'b': 30, 'r': 10, 't': 10},
             'annotations': [{
-                'x': 0, 'y': 0.85, 'xanchor': 'center', 'yanchor': 'bottom',
+                'x': 0.1, 'y': 0, 'xanchor': 'center', 'yanchor': 'bottom',
                 'xref': 'paper', 'yref': 'paper', 'showarrow': False,
-                'align': 'left', 'bgcolor': 'rgba(255, 255, 255, 0.5)',
+                'align': 'center', 'bgcolor': 'rgba(255, 255, 255, 0.5)',
                 'text': title
             }],
             'yaxis': {'type': 'linear' if axis_type == 'Linear' else 'log'},
