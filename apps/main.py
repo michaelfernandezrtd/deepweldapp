@@ -215,7 +215,7 @@ layout = html.Div(
 
                                                             ),
                                    ]),
-                        
+
                         dcc.Tab(label='Visualization',
                                 children=[html.Div([
                                                     html.Div([
@@ -242,10 +242,7 @@ layout = html.Div(
                                                                     'display': 'inline-block',
                                                                     'padding': '0 20'
                                                            }),
-                                                        html.Br(),
-                                                        html.Br(),
-                                                        html.Br(),
-                                                        html.Br(),
+
 
                                                     ]),
 
@@ -277,7 +274,7 @@ layout = html.Div(
                                                  'margin-top': 0,
                                                  'margin-bottom': 0
                                                 }),
-                                html.Pre(id='hover-data', style=styles['pre']),
+
                         ]),
             ]),
 
