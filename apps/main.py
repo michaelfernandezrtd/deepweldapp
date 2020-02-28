@@ -23,13 +23,6 @@ import json
 # else:
 app_name = 'deepweld'
 
-external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
-styles = {
-    'pre': {
-        'border': 'thin lightgrey solid',
-        'overflowX': 'scroll'
-    }
-}
 
 distortion_dict = read_distortion(pattern_folder="data/")
 filenames = list(distortion_dict.keys())
@@ -232,12 +225,15 @@ layout = html.Div(
                                                                                 },
 
                                                             ),
-
+                                                            html.Br(),
+                                                            html.Br(),
                                                             html.Div(html.Button('Compute distortion', id='submit_button',),
                                                                         style={
                                                                                      "text-align": "center"
-                                                                        }
-                                                        ),
+                                                                        },),
+                                                        html.Br(),
+                                                        html.Br(),
+
                                                         ], style={'width': 'auto',
                                                                     'display': 'inline-block',
                                                                     'padding': '0 20'
@@ -251,21 +247,21 @@ layout = html.Div(
                                                 html.Div([
                                                             html.Div(
                                                                         dcc.Graph(id='x-z-scatter',), style={
-                                                                                                        'width': '49%',
+                                                                                                        'width': '35%',
                                                                                                         'display': 'inline-block',
                                                                                                         'padding': '20 20'
                                                                                                       }
                                                             ),
-
+                                                            html.Br(),
                                                             html.Div(
                                                                         dcc.Graph(id='y-z-scatter'), style={
-                                                                                                        'width': '49%',
+                                                                                                        'width': '35%',
                                                                                                         'display': 'inline-block',
                                                                                                         'padding': '20 20'
                                                                                                       },
                                                              ),
 
-                                                ]),
+                                                ], className="row"),
 
                                 ], className='row',  style={
                                                  'position': 'relative',
@@ -482,7 +478,7 @@ def update_figure(n_clicks, input_nrow, input_ncol, list_of_contents, list_of_na
                             colorbar={"title": "Distortion (mm)", "len": 0.5, "thickness": 15}, )]
 
     fig = go.Figure(data=trace,
-                    layout=go.Layout(autosize=True, height=800, width=1200,
+                    layout=go.Layout(autosize=True, height=400, width=800, margin=dict(r=10, l=10, b=10, t=10),
                                      scene={"xaxis": {'title': "X (mm)",
                                                       "tickfont": {"size": 10}, 'type': "linear", },
                                             "yaxis": {"title": " Y (mm)",
@@ -496,11 +492,12 @@ def update_figure(n_clicks, input_nrow, input_ncol, list_of_contents, list_of_na
                                             "aspectratio": {"x": 1, "y": 1, "z": 0.3}}))
 
     fig.update_layout(
+
         title={
             'y': 0.92,
             'x': 0.50,
-            'xanchor': 'center',
-            'yanchor': 'bottom',
+            # 'xanchor': 'center',
+            # 'yanchor': 'bottom',
             "font": {
                 "size": 36,
                 "color": "black",

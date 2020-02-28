@@ -12,12 +12,13 @@ def scatter_plot(dff, axis_type, title):
             mode='lines+markers'
         )],
         'layout': {
-            'height': 225,
+            'height': 200,
+            'width': 650,
             'margin': {'l': 20, 'b': 30, 'r': 10, 't': 10},
             'annotations': [{
                 'x': 0.1, 'y': 0, 'xanchor': 'center', 'yanchor': 'bottom',
                 'xref': 'paper', 'yref': 'paper', 'showarrow': False,
-                'align': 'center', 'bgcolor': 'rgba(255, 255, 255, 0.5)',
+                'align': 'right', 'bgcolor': 'rgba(255, 255, 255, 0.5)',
                 'text': title
             }],
             'yaxis': {'type': 'linear' if axis_type == 'Linear' else 'log'},
